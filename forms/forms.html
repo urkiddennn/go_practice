@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Contact Form</title>
+    <link href="css/style.css" rel="stylesheet" />
+    <script
+      defer
+      src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+  </head>
+  <body>
+    <template x-if=".Success">
+      <div>Successs</div>
+    </template>
+
+    <div
+      x-data="{
+        form: {
+          email: '',
+          subject: '',
+          message: ''
+        },
+        errors: {},
+        validateForm() {
+          this.errors = {};
+          if (!this.form.email || !this.form.email.includes('@')) {
+            this.errors.email = 'Please enter a valid email';
+          }
+          if (!this.form.subject) {
+            this.errors.subject = 'Subject is required';
+          }
+          if (!this.form.message) {
+            this.errors.message = 'Message is required';
+          }
+          return Object.keys(this.errors).length === 0;
+        }
+      }"
+    >
+      <h1>Contact</h1>
+      <form method="POST" @submit.prevent="if(validateForm()) $el.submit()">
+        <label for="email">Email:</label><br />
+        <input
+          type="text"
+          name="email"
+          id="email"
+          x-model="form.email"
+          :class="{ 'error': errors.email }"
+        /><br />
+        <span
+          x-show="errors.email"
+          x-text="errors.email"
+          style="color: red"
+        ></span
+        ><br />
+
+        <label for="subject">Subject:</label><br />
+        <input
+          type="text"
+          name="subject"
+          id="subject"
+          x-model="form.subject"
+          :class="{ 'error': errors.subject }"
+        /><br />
+        <span
+          x-show="errors.subject"
+          x-text="errors.subject"
+          style="color: red"
+        ></span
+        ><br />
+
+        <label for="message">Message:</label><br />
+        <textarea
+          rows="5"
+          cols="30"
+          name="message"
+          id="message"
+          x-model="form.message"
+          :class="{ 'error': errors.message }"
+        ></textarea
+        ><br />
+        <span
+          x-show="errors.message"
+          x-text="errors.message"
+          style="color: red"
+        ></span
+        ><br />
+
+        <input type="submit" value="Submit" />
+      </form>
+    </div>
+  </body>
+</html>
